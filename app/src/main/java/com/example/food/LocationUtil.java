@@ -20,7 +20,7 @@ public class LocationUtil {
         //初始化AMapLocationClientOption对象
         AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         //设置定位模式（采取高精度定位模式）
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         //设置单次定位
         mLocationOption.setOnceLocation(true);
         //获取3s内最精确的一次定位结果

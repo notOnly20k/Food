@@ -47,8 +47,13 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
-    implementation 'com.amap.api:location:3.3.0'
-    implementation 'com.amap.api:search:5.0.0'
+
+    //定位功能
+    implementation 'com.amap.api:location:latest.integration'
+    //搜索功能
+    implementation 'com.amap.api:search:latest.integration'
+    //2D地图
+    implementation 'com.amap.api:map2d:latest.integration'
 
     implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 

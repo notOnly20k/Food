@@ -16,6 +16,10 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -31,10 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.nav_view)
     BottomNavigationView navView;
-    private AMapLocationClientOption mLocationOption;
 
     private Fragment[] fragments;
     private int lastfragment = 0;
+
+    String TAG ="sssssss"  ;
 
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -48,22 +53,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragments=new Fragment[]{new HomeFragment(),new FavFragment(),new MineFragment()};
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragments[0]).show(fragments[0]).commit();
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置单次定位
-        mLocationOption.setOnceLocation(true);
-        //获取3s内最精确的一次定位结果
-        mLocationOption.setOnceLocationLatest(true);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-
-        mLocationClient.setLocationOption(mLocationOption);
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //启动定位
-        mLocationClient.startLocation();
 
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -98,6 +87,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initLocationListener();
+
+    }
+
+    private void initLocationListener() {
+//初始化定位
+        AMapLocationClient mLocationClient = new AMapLocationClient(getApplicationContext());
+        AMapLocationClientOption mLocationOption=new AMapLocationClientOption();
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //设置单次定位
+        mLocationOption.setOnceLocation(true);
+        //获取3s内最精确的一次定位结果
+        mLocationOption.setOnceLocationLatest(true);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        //声明定位回调监听器
+
+        mLocationClient.setLocationOption(mLocationOption);
+        AMapLocationListener mLocationListener = new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                Log.i(TAG, "aMapLocation:" + aMapLocation.getAddress());
+                //获取纬度
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+//可在其中解析amapLocation获取相应内容。
+                        Log.i(TAG, "aMapLocation:" + aMapLocation.getPoiName());
+                        search("050000",aMapLocation.getCityCode(),aMapLocation);
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        Log.i(TAG, "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        };
+//设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+//启动定位
+        mLocationClient.startLocation();
     }
 
 
@@ -112,17 +142,41 @@ public class MainActivity extends AppCompatActivity {
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }
 
-    //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-    //声明定位回调监听器
-    public AMapLocationListener mLocationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation aMapLocation) {
-            String address = aMapLocation.getAddress();
-            Toast.makeText(MainActivity.this,"请同意权限==="+address,Toast.LENGTH_SHORT).show();
-            Log.e("address",address);
-        }
-    };
+    public void search(String keyWord,String cityCode,AMapLocation aMapLocation){
+        PoiSearch.Query query = new PoiSearch.Query("", keyWord, cityCode);
+//keyWord表示搜索字符串，
+//第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
+//cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
+        query.setPageSize(10);// 设置每页最多返回多少条poiitem
+        query.setPageNum(1);//设置查询页码
+        PoiSearch poiSearch = new PoiSearch(this, query);
+        poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
+            @Override
+            public void onPoiSearched(PoiResult poiResult, int i) {
+                Log.i(TAG, "getLatitude:"+aMapLocation.getCityCode()+aMapLocation.getLatitude()+"--"+aMapLocation.getLongitude());
+                for (int j = 0; j <poiResult.getPois().size() ; j++) {
+                    PoiItem poiItem = poiResult.getPois().get(j);
+                    Log.i(TAG, "OnPoiSearchListener:"
+                            +"1"+ poiItem.getTitle()
+                            +poiItem.getProvinceName()+poiItem.getCityName()+ poiItem.getAdName()+poiItem.getSnippet()
+                            +poiItem.getTypeDes()
+                    );
+                }
+            }
+
+            @Override
+            public void onPoiItemSearched(PoiItem poiItem, int i) {
+
+            }
+        });
+//   0851     26.559846--106.725175
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+
+        poiSearch.searchPOIAsyn();
+    }
+
+
 
     @Override
     protected void onDestroy() {
