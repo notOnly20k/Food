@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//   0851     26.559846--106.725175
+//   0851  26.559846--106.725175
         poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
                 aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
 
