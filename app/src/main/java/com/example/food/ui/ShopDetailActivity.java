@@ -1,4 +1,4 @@
-package com.example.food;
+package com.example.food.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +8,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.food.bean.Message;
+import com.example.food.adapter.MessageAdapter;
+import com.example.food.R;
+import com.example.food.bean.Shop;
 
 import java.util.ArrayList;
 import java.util.List;

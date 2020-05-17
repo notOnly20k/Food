@@ -1,4 +1,4 @@
-package com.example.food;
+package com.example.food.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,7 @@ import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.model.BitmapDescriptor;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.example.food.R;
 
 public class Main2Activity extends AppCompatActivity {
 

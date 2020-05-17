@@ -1,18 +1,20 @@
-package com.example.food;
+package com.example.food.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.food.R;
+import com.example.food.bean.Shop;
+import com.example.food.adapter.ShopAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -95,11 +97,7 @@ public class HomeFragment extends Fragment {
 
     public void getData(){
         shops.clear();
-        shops.add(new Shop("呵呵饭店","贵阳市南明区"));
-        shops.add(new Shop("呵呵饭店","贵阳市南明区"));
-        shops.add(new Shop("呵呵饭店","贵阳市南明区"));
-        shops.add(new Shop("呵呵饭店","贵阳市南明区"));
-        shops.add(new Shop("呵呵饭店","贵阳市南明区"));
+        shops.add(new Shop());
         shopAdapter.setData(shops);
     }
 

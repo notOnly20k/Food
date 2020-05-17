@@ -27,6 +27,7 @@
         android:layout_margin="16dp"
         android:onClick="login"
         android:layout_height="wrap_content"
+        android:background="@color/yellow_ffcc00_alpha"
         android:layout_gravity="center_horizontal"
         android:text="登录"
         />

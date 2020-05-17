@@ -1,4 +1,4 @@
-package com.example.food;
+package com.example.food.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;

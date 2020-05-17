@@ -1,9 +1,14 @@
-package com.example.food;
+package com.example.food.adapter;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.food.R;
+import com.example.food.adapter.BaseAdapter;
+import com.example.food.adapter.BaseHolder;
+import com.example.food.bean.Shop;
 
 import java.util.List;
 
