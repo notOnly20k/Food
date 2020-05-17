@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.hide(fragments[lastfragment]);
         if (fragments[index].isAdded() == false) {
             transaction.add(R.id.frame, fragments[index]);
-
         }
         transaction.show(fragments[index]).commitAllowingStateLoss();
     }
