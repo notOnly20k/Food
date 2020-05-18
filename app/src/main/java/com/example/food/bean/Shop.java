@@ -1,5 +1,6 @@
 package com.example.food.bean;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -7,20 +8,13 @@ import java.io.Serializable;
 
 @Entity
 public class Shop implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
+    @NonNull
+    @PrimaryKey()
     private String name;
     private String address;
     private String type;
 
 
-    public int getUid() {
-        return uid;
-    }
-
-    public void setUid(int uid) {
-        this.uid = uid;
-    }
 
     public String getName() {
         return name;
@@ -49,7 +43,6 @@ public class Shop implements Serializable {
     @Override
     public String toString() {
         return "Shop{" +
-                "uid=" + uid +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", type='" + type + '\'' +

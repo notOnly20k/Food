@@ -1,7 +1,9 @@
 package com.example.food.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +17,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.food.R;
 import com.example.food.bean.Shop;
 import com.example.food.adapter.ShopAdapter;
+import com.example.food.bean.UserFav;
+import com.example.food.dao.AppDatabase;
+import com.example.food.utils.RxBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -28,7 +38,7 @@ import butterknife.ButterKnife;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,6 +75,7 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,12 +84,15 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
     }
 
+    AppDatabase appDatabase;
+
+    @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+         appDatabase=initAppDatabase();
         shopAdapter = new ShopAdapter(getContext(), shops, R.layout.item_shop);
         shopAdapter.setCallback(new ShopAdapter.Callback() {
             @Override
@@ -89,17 +103,74 @@ public class HomeFragment extends Fragment {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
+
+            @Override
+            public void OnFavClick(Shop shop, boolean fav) {
+                UserFav userFav=new UserFav();
+                userFav.setName(shop.getName());
+                userFav.setUserId(getCurrentUser().getUserId());
+                Completable completable;
+                Log.e(TAG,fav+"");
+                if (fav){
+                   completable= appDatabase.shopDao().insertFav(userFav);
+
+                }else {
+                    completable=appDatabase.shopDao().deleteFav(userFav.getName(),userFav.getUserId());
+                }
+                completable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError(throwable -> {
+                            showToast("操作失败");
+                        })
+                        .subscribe(() -> {
+                                    if (fav){
+                                        showToast("收藏成功");
+                                    }else {
+                                        showToast("取消成功");
+                                    }
+                                    refresh();
+                                },
+                                throwable -> {
+                                    showToast("操作失败");
+                                    Log.e(TAG,"操作失败",throwable);
+                                });
+            }
         });
         recHome.setAdapter(shopAdapter);
         recHome.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        getData();
+        RxBus.get().toObservable()
+                .map(o -> (List<Shop>) o)
+                .doOnSubscribe(it->compositeDisposable.add(it))
+                .subscribe(list -> {
+                    if (list != null) {
+                        shops.clear();
+                        shops.addAll(list);
+                        refresh();
+                    }
+                });
     }
 
-    public void getData(){
-        shops.clear();
-        shops.add(new Shop());
-        shopAdapter.setData(shops);
+
+    public void refresh(){
+        compositeDisposable.add(appDatabase.shopDao().getUserFavShopId(getCurrentUser().getUserId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> {
+                    showToast("操作失败");
+                })
+                .subscribe(names -> {
+                    Log.e(TAG,names.toString());
+                            shopAdapter.notifyShopFav(names);
+                            shopAdapter.setData(shops);
+                        },
+                        throwable -> {
+                            showToast("操作失败");
+                            Log.e(TAG,"操作失败",throwable);
+                        })
+        );
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

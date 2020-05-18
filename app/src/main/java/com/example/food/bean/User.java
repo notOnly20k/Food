@@ -8,11 +8,12 @@ import androidx.room.TypeConverters;
 
 import com.example.food.utils.StringListConverters;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @TypeConverters(StringListConverters.class)
-public class User {
+public class User implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private int userId;
     private String name;

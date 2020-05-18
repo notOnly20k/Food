@@ -1,6 +1,7 @@
 package com.example.food.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,8 +73,8 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String name=etName.getText().toString();
-                String tel=etTel.getText().toString();
-                if (name.isEmpty()||tel.isEmpty()){
+                String pwd=etTel.getText().toString();
+                if (name.isEmpty()||pwd.isEmpty()){
                     showToast("请完善个人信息");
                 }else {
                     User user=new User();
@@ -84,14 +85,18 @@ public class RegisterActivity extends BaseActivity {
                     }
 
                     user.setFav(selectfav);
+                    user.setName(name);
+                    user.setPwd(pwd);
                      AppDatabase appDatabase= Room.databaseBuilder(getApplicationContext(),AppDatabase.class,"food.db").build();
                      appDatabase.userDao()
                              .insert(user)
                              .subscribeOn(Schedulers.io())
                              .observeOn(AndroidSchedulers.mainThread())
                              .doOnSubscribe(disposable -> compositeDisposable.add(disposable))
-                             .subscribe(lon -> {
+                             .subscribe(() -> {
                                          showToast("操作成功");
+                                         Intent intent2 = new Intent(RegisterActivity.this, LoginActivity.class);
+                                         startActivity(intent2);
                                      },
                                      throwable -> {
                                          showToast("操作失败");

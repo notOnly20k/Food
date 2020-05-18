@@ -8,13 +8,13 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "userId", childColumns = "user_id",onDelete = CASCADE),
-        @ForeignKey(entity = Shop.class, parentColumns = "uid", childColumns = "shop_id",onDelete = CASCADE)},indices = {@Index(value = "user_id"),@Index(value = "shop_id")})
+@Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "userId", childColumns = "userId",onDelete = CASCADE),
+        @ForeignKey(entity = Shop.class, parentColumns = "name", childColumns = "name",onDelete = CASCADE)},indices = {@Index(value = "userId"),@Index(value = "name")})
 public class UserFav {
     @PrimaryKey(autoGenerate = true)
     private int uid;
-    private int user_id;
-    private int shop_id;
+    private int userId;
+    private String name;
 
     public int getUid() {
         return uid;
@@ -24,28 +24,19 @@ public class UserFav {
         this.uid = uid;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getShop_id() {
-        return shop_id;
+    public String getName() {
+        return name;
     }
 
-    public void setShop_id(int shop_id) {
-        this.shop_id = shop_id;
-    }
-
-    @Override
-    public String toString() {
-        return "UserFav{" +
-                "uid=" + uid +
-                ", user_id=" + user_id +
-                ", shop_id=" + shop_id +
-                '}';
+    public void setName(String name) {
+        this.name = name;
     }
 }

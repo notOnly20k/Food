@@ -23,7 +23,7 @@ public class Message {
     @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
     @Embedded
     private User user;
-    private int shop_id;
+    private int shopNmae;
     private Date date;
     private String content;
 
@@ -43,12 +43,12 @@ public class Message {
         this.user = user;
     }
 
-    public int getShop_id() {
-        return shop_id;
+    public int getShopNmae() {
+        return shopNmae;
     }
 
-    public void setShop_id(int shop_id) {
-        this.shop_id = shop_id;
+    public void setShopNmae(int shopNmae) {
+        this.shopNmae = shopNmae;
     }
 
     public Date getDate() {
@@ -72,7 +72,7 @@ public class Message {
         return "Message{" +
                 "uid=" + uid +
                 ", user=" + user +
-                ", shop_id=" + shop_id +
+                ", shopNmae=" + shopNmae +
                 ", date=" + date +
                 ", content='" + content + '\'' +
                 '}';

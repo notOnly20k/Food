@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ShopDetailActivity extends AppCompatActivity {
+public class ShopDetailActivity extends BaseActivity {
 
     @BindView(R.id.img)
     ImageView img;
@@ -44,6 +44,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
+        setBackButton(true);
         ButterKnife.bind(this);
         shop = (Shop) getIntent().getExtras().getSerializable("shop");
         tvName.setText(shop.getName());

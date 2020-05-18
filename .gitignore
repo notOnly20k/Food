@@ -12,3 +12,10 @@
 /captures
 .externalNativeBuild
 .cxx
+将删除 .idea/vcs.xml
+将删除 app/libs/
+将删除 app/src/androidTest/
+将删除 app/src/test/
+将删除 libs/
+将删除 src/androidTest/
+将删除 src/test/

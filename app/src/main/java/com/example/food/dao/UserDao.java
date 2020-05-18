@@ -18,10 +18,10 @@ import io.reactivex.Single;
 @Dao
 public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Single<List<Long>> insert(User userEntity);
+    Completable insert(User userEntity);
 
     @Insert
-    Single<List<Long>> insertAll(List<User> userEntities);
+    Completable insertAll(List<User> userEntities);
 
     @Delete
     void delete(User userEntity);
@@ -30,7 +30,7 @@ public interface UserDao {
     void deleteAll(List<User> userEntities);
 
     @Update
-    Single<List<Long>> update(User userEntity);
+    Completable update(User userEntity);
 
     @Query("SELECT * FROM User")
     Flowable<List<User>> getAll();

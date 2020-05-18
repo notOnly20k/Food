@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="130dp">
+    android:layout_height="180dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
             <ImageView
                 android:id="@+id/img"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_height="160dp"
                 android:layout_margin="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/shop" />
@@ -27,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textColor="@color/black_00"
                 android:layout_toRightOf="@id/img"
                 android:text="XXXXXXXXXXX"
                 android:textSize="16sp" />
@@ -39,7 +41,7 @@
                 android:layout_margin="8dp"
                 android:layout_toRightOf="@id/img"
                 android:text="XXXXXXXXXXX"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
             <ImageView
                 android:id="@+id/img_fav"
                 android:src="@drawable/ic_favorite_black_24dp"
@@ -64,6 +66,17 @@
                 android:layout_alignParentRight="true"
                 android:padding="8dp"
                 />
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/flowlayout"
+                zhy:max_select="0"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/img"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+            </com.zhy.view.flowlayout.TagFlowLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 

@@ -22,10 +22,11 @@
         android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="300dp"
+        android:inputType="numberPassword"
         android:textSize="16sp"
         android:textColor="@color/black_00"
         android:layout_height="wrap_content"
-        android:hint="电话"
+        android:hint="密码"
         />
     <TextView
         android:layout_margin="16dp"
