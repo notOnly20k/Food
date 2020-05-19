@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +44,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.nav_view)
     BottomNavigationView navView;
 
+    @BindView(R.id.tv_locate)
+    TextView tvLocate;
+
     private Fragment[] fragments;
     private int lastfragment = 0;
 
@@ -49,7 +54,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         ButterKnife.bind(this);
 
 
@@ -90,7 +97,7 @@ public class MainActivity extends BaseActivity {
         });
 
         initLocationListener();
-        search("050000", "0851", null);
+//        search("050000", "0851", null);
     }
 
     private void initLocationListener() {
@@ -115,6 +122,7 @@ public class MainActivity extends BaseActivity {
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
 //可在其中解析amapLocation获取相应内容。
+                        tvLocate.setText(aMapLocation.getCity());
                         Log.i(TAG, "aMapLocation:" + aMapLocation.getPoiName());
                         search("050000", aMapLocation.getCityCode(), aMapLocation);
                     } else {
@@ -148,7 +156,7 @@ public class MainActivity extends BaseActivity {
 //keyWord表示搜索字符串，
 //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
 //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
-        query.setPageSize(20);// 设置每页最多返回多少条poiitem
+        query.setPageSize(50);// 设置每页最多返回多少条poiitem
         query.setPageNum(1);//设置查询页码
         PoiSearch poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
@@ -194,11 +202,11 @@ public class MainActivity extends BaseActivity {
             }
         });
 //   0851  26.559846--106.725175
-//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
-//                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
-
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
-                106.725175), 1000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+//
+//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
+//                106.725175), 1000));//设置周边搜索的中心点以及半径
 
         poiSearch.searchPOIAsyn();
     }

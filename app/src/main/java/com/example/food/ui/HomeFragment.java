@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.food.R;
 import com.example.food.bean.Shop;
@@ -45,6 +46,9 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     private ShopAdapter shopAdapter;
+
+    @BindView(R.id.swip)
+    SwipeRefreshLayout swip;
     @BindView(R.id.rec_home)
     RecyclerView recHome;
     private ArrayList<Shop> shops = new ArrayList<>();
@@ -117,7 +121,7 @@ public class HomeFragment extends BaseFragment {
                 }else {
                     completable=appDatabase.shopDao().deleteFav(userFav.getName(),userFav.getUserId());
                 }
-                completable.subscribeOn(Schedulers.io())
+                compositeDisposable.add(completable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(throwable -> {
                             showToast("操作失败");
@@ -128,12 +132,12 @@ public class HomeFragment extends BaseFragment {
                                     }else {
                                         showToast("取消成功");
                                     }
-                                    refresh();
                                 },
                                 throwable -> {
                                     showToast("操作失败");
                                     Log.e(TAG,"操作失败",throwable);
-                                });
+                                })
+                );
             }
         });
         recHome.setAdapter(shopAdapter);
@@ -148,6 +152,13 @@ public class HomeFragment extends BaseFragment {
                         refresh();
                     }
                 });
+
+        swip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        });
     }
 
 
@@ -162,10 +173,12 @@ public class HomeFragment extends BaseFragment {
                     Log.e(TAG,names.toString());
                             shopAdapter.notifyShopFav(names);
                             shopAdapter.setData(shops);
+                            swip.setRefreshing(false);
                         },
                         throwable -> {
                             showToast("操作失败");
                             Log.e(TAG,"操作失败",throwable);
+                            swip.setRefreshing(false);
                         })
         );
     }

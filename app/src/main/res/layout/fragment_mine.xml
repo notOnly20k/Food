@@ -47,8 +47,8 @@
 
     <Button
         android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="45dp"
         android:layout_margin="16dp"
         android:background="@color/yellow_ffcc00_alpha"
         android:layout_gravity="center_horizontal"
@@ -58,7 +58,7 @@
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_margin="16dp"
         android:background="@color/grey_cccccc"
         android:layout_gravity="center_horizontal"

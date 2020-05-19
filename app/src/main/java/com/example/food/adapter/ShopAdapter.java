@@ -1,6 +1,7 @@
 package com.example.food.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,12 +12,16 @@ import com.example.food.adapter.BaseAdapter;
 import com.example.food.adapter.BaseHolder;
 import com.example.food.bean.Constant;
 import com.example.food.bean.Shop;
+import com.example.food.bean.User;
+import com.example.food.utils.PreferencesUtil;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -90,6 +95,24 @@ public class ShopAdapter extends BaseAdapter<Shop> {
         this.favList = names;
     }
 
+    @Override
+    public void setData(List<Shop> datas) {
+        User user=(User) PreferencesUtil.getInstance().getParam("user", null);
+
+        Collections.sort(datas, new Comparator<Shop>() {
+            @Override
+            public int compare(Shop shop, Shop t1) {
+                int s=-1;
+                for (int i = 0; i < user.getFav().size(); i++) {
+                    if (t1.getType().split(";")[1].equals(user.getFav().get(i))){
+                        s=100;
+                    }
+                }
+                return s;
+            }
+        });
+        super.setData(datas);
+    }
 
     public interface Callback {
         void OnItemClick(Shop shop);

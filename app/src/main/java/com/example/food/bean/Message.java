@@ -23,7 +23,7 @@ public class Message {
     @SuppressWarnings(RoomWarnings.PRIMARY_KEY_FROM_EMBEDDED_IS_DROPPED)
     @Embedded
     private User user;
-    private int shopNmae;
+    private String shopNmae;
     private Date date;
     private String content;
 
@@ -43,11 +43,11 @@ public class Message {
         this.user = user;
     }
 
-    public int getShopNmae() {
+    public String getShopNmae() {
         return shopNmae;
     }
 
-    public void setShopNmae(int shopNmae) {
+    public void setShopNmae(String shopNmae) {
         this.shopNmae = shopNmae;
     }
 

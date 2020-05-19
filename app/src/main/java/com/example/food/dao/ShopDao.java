@@ -32,6 +32,7 @@ public interface ShopDao {
     @Query("SELECT * FROM Shop")
     Flowable<List<Shop>> getAllShops();
 
+    @Transaction
     @Query("SELECT * FROM User WHERE userId = :userId")
     Flowable<UserAllShop> getUserFav(int userId);
 
@@ -41,7 +42,7 @@ public interface ShopDao {
 
 
     @Insert
-    Completable insertFav(UserFav userFavs);
+    Completable insertFav(UserFav userFav);
 
     @Query("delete  from UserFav where name = :name and userId = :userId")
     Completable deleteFav(String name,int userId);

@@ -9,6 +9,7 @@ import com.example.food.adapter.BaseAdapter;
 import com.example.food.adapter.BaseHolder;
 import com.example.food.bean.Message;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 
@@ -31,13 +32,18 @@ public class MessageAdapter extends BaseAdapter<Message> {
     @Override
     protected void onBindData(BaseHolder baseHolder, final Message message, int postion) {
        TextView tvName=baseHolder.getView(R.id.tv_name);
-       TextView tvAdr=baseHolder.getView(R.id.tv_adr);
-       baseHolder.getItemView().setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               callback.OnItemClick(message);
-           }
-       });
+       TextView tvContemt=baseHolder.getView(R.id.tv_content);
+       TextView tvTime=baseHolder.getView(R.id.tv_time);
+       tvName.setText(message.getUser().getName());
+       tvContemt.setText(message.getContent());
+       SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       tvTime.setText(sdf.format(message.getDate()));
+//       baseHolder.getItemView().setOnClickListener(new View.OnClickListener() {
+//           @Override
+//           public void onClick(View v) {
+//               callback.OnItemClick(message);
+//           }
+//       });
     }
 
 

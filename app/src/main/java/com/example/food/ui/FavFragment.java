@@ -117,7 +117,7 @@ public class FavFragment extends BaseFragment {
                 } else {
                     completable = appDatabase.shopDao().deleteFav(userFav.getName(), userFav.getUserId());
                 }
-                completable.subscribeOn(Schedulers.io())
+                compositeDisposable.add(completable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError(throwable -> {
                             showToast("操作失败");
@@ -133,11 +133,13 @@ public class FavFragment extends BaseFragment {
                                 throwable -> {
                                     showToast("操作失败");
                                     Log.e(TAG, "操作失败", throwable);
-                                });
+                                })
+                );
             }
         });
         recHome.setAdapter(shopAdapter);
         recHome.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        getData();
         swip.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

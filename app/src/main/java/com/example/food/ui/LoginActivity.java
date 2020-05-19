@@ -54,6 +54,7 @@ public class LoginActivity extends BaseActivity {
         if (PreferencesUtil.getInstance().getParam("user", null) != null) {
             Intent intent2 = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent2);
+            finish();
         }
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -114,6 +115,7 @@ public class LoginActivity extends BaseActivity {
                                 PreferencesUtil.getInstance().saveParam("user",user);
                                 Intent intent2 = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(intent2);
+                                finish();
                             },
                             throwable -> {
                                 showToast("操作失败");

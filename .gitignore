@@ -19,3 +19,5 @@
 将删除 libs/
 将删除 src/androidTest/
 将删除 src/test/
+将删除 .idea/encodings.xml
+将删除 .idea/misc.xml
