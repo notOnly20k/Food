@@ -29,8 +29,9 @@
             android:layout_margin="8dp"
             android:textStyle="bold"
             android:textSize="30sp"
-            android:layout_centerInParent="true"
-            android:text="Food"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="美食"
             />
     </RelativeLayout>
 

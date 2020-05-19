@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.food.R;
 import com.example.food.adapter.BaseAdapter;
 import com.example.food.adapter.BaseHolder;
@@ -14,6 +16,7 @@ import com.example.food.bean.Constant;
 import com.example.food.bean.Shop;
 import com.example.food.bean.User;
 import com.example.food.utils.PreferencesUtil;
+import com.squareup.picasso.Picasso;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -48,6 +51,21 @@ public class ShopAdapter extends BaseAdapter<Shop> {
         TextView tvAdr = baseHolder.getView(R.id.tv_adr);
         ImageView imgFav = baseHolder.getView(R.id.img_fav);
         ImageView imgDisFav = baseHolder.getView(R.id.img_disfav);
+        ImageView img = baseHolder.getView(R.id.img);
+        Picasso.with(context) //
+                .load(shop.getPicUrl()) //加载地址
+                .placeholder(R.drawable.shop)
+                //占位图
+                .error(R.drawable.shop) //加载失败的图
+                .fit() //充满
+                .into(img);//加载到的ImageView 
+
+//        RequestOptions options = new RequestOptions()
+//                .placeholder(R.drawable.shop);
+//        Glide.with(context)
+//                .load(shop.getPicUrl())
+//                .apply(options)
+//                .into(imgDisFav);
         TagFlowLayout tagFlowLayout = baseHolder.getView(R.id.flowlayout);
         final LayoutInflater mInflater = LayoutInflater.from(context);
         tagFlowLayout.setAdapter(new TagAdapter<String>(shop.getType().split(";")) {

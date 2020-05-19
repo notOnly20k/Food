@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
         });
 
         initLocationListener();
-//        search("050000", "0851", null);
+        search("050000", "0851", null);
     }
 
     private void initLocationListener() {
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity {
                 if (aMapLocation != null) {
                     if (aMapLocation.getErrorCode() == 0) {
 //可在其中解析amapLocation获取相应内容。
-                        tvLocate.setText(aMapLocation.getCity());
+                        tvLocate.setText(aMapLocation.getCity()+aMapLocation.getAddress());
                         Log.i(TAG, "aMapLocation:" + aMapLocation.getPoiName());
                         search("050000", aMapLocation.getCityCode(), aMapLocation);
                     } else {
@@ -175,6 +175,13 @@ public class MainActivity extends BaseActivity {
                     shop.setAddress(poiItem.getProvinceName() + poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
                     shop.setName(poiItem.getTitle());
                     shop.setType(poiItem.getTypeDes());
+                    if (poiItem.getPhotos().size()>0) {
+                        String url=poiItem.getPhotos().get(0).getUrl();
+                        if (url.startsWith("http://")){
+                            url=url.replace("http://","https://");
+                        }
+                        shop.setPicUrl(url);
+                    }
                     shops.add(shop);
                 }
                 AppDatabase appDatabase=initAppDatabase();
@@ -202,11 +209,11 @@ public class MainActivity extends BaseActivity {
             }
         });
 //   0851  26.559846--106.725175
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
-                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+//                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
 //
-//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
-//                106.725175), 1000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
+                106.725175), 1000));//设置周边搜索的中心点以及半径
 
         poiSearch.searchPOIAsyn();
     }

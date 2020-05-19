@@ -13,8 +13,15 @@ public class Shop implements Serializable {
     private String name;
     private String address;
     private String type;
+    private String picUrl;
 
+    public String getPicUrl() {
+        return picUrl;
+    }
 
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
     public String getName() {
         return name;

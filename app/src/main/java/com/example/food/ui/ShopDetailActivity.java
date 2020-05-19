@@ -19,6 +19,7 @@ import com.example.food.bean.Message;
 import com.example.food.bean.Shop;
 import com.example.food.bean.UserFav;
 import com.example.food.dao.AppDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,6 +74,13 @@ public class ShopDetailActivity extends BaseActivity {
         shop = (Shop) getIntent().getExtras().getSerializable("shop");
         tvName.setText(shop.getName());
         tvAdr.setText(shop.getAddress());
+        Picasso.with(this) //
+                .load(shop.getPicUrl()) //加载地址
+                .placeholder(R.drawable.shop)
+                //占位图
+                .error(R.drawable.shop) //加载失败的图
+                .fit() //充满
+                .into(img);//加载到的ImageView 
 
         imgFav.setOnClickListener(new View.OnClickListener() {
             @Override
