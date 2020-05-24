@@ -14,7 +14,7 @@ import com.example.food.bean.User;
 import com.example.food.bean.UserAllShop;
 import com.example.food.bean.UserFav;
 
-@Database(entities = {User.class, Message.class, Shop.class, UserFav.class}, version = 4, exportSchema = false)
+@Database(entities = {User.class, Message.class, Shop.class, UserFav.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "food.db";
@@ -32,7 +32,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 context,
                 AppDatabase.class,
                 DB_NAME)
-                .fallbackToDestructiveMigration()
+//                .fallbackToDestructiveMigration()
                 .build();
     }
 

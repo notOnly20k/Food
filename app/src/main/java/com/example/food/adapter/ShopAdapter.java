@@ -117,19 +117,12 @@ public class ShopAdapter extends BaseAdapter<Shop> {
         this.favList = names;
     }
 
-    @Override
-    public void setData(List<Shop> datas) {
-        User user=(User) PreferencesUtil.getInstance().getParam("user", null);
-
-        Collections.sort(datas, new Comparator<Shop>() {
-            @Override
-            public int compare(Shop shop, Shop t1) {
-
-                return -(shop.getWeight()-t1.getWeight());
-            }
-        });
-        super.setData(datas);
-    }
+//    @Override
+//    public void setData(List<Shop> datas) {
+//
+//
+//        super.setData(datas);
+//    }
 
     public interface Callback {
         void OnItemClick(Shop shop);

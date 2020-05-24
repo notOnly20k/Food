@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity {
     TextView tvLocate;
 
     private Fragment[] fragments;
+    private List<Shop>favList=new ArrayList<>();
     private int lastfragment = 0;
 
 
@@ -60,7 +61,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         ButterKnife.bind(this);
-
 
         fragments = new Fragment[]{new HomeFragment(), new FavFragment(), new MineFragment()};
         getSupportFragmentManager().beginTransaction().replace(R.id.frame, fragments[0]).show(fragments[0]).commit();
@@ -99,8 +99,10 @@ public class MainActivity extends BaseActivity {
         });
 
         initLocationListener();
-//        search("050000", "0851", null);
+        search("050000", "0851", null);
     }
+
+
 
     private void initLocationListener() {
 //初始化定位
@@ -194,27 +196,7 @@ public class MainActivity extends BaseActivity {
                         }
                         shop.setPicUrl(url);
                     }
-                    if (getCurrentUser().getFav().get(0).equals(shop.getType())){
-                        shop.setWeight(shop.getWeight()+10);
-                    }
-                    int jobWeight=0;
-                    switch (getCurrentUser().getJob()){
-                        case "学生":
-                            jobWeight=30;
-                            break;
-                        case "工人":
-                            jobWeight=40;
-                            break;
-                        case "白领":
-                            jobWeight=60;
-                            break;
-                        case "吃货":
-                            jobWeight=100;
-                            break;
-                    }
-                    if (Integer.parseInt(shop.getPrice())<=jobWeight){
-                        shop.setWeight(shop.getWeight()+10);
-                    }
+
                     shops.add(shop);
                 }
                 AppDatabase appDatabase=initAppDatabase();
@@ -242,11 +224,11 @@ public class MainActivity extends BaseActivity {
             }
         });
 //   0851  26.559846--106.725175
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
-                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+//                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
 
-//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
-//                106.725175), 1000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
+                106.725175), 1000));//设置周边搜索的中心点以及半径
 
         poiSearch.searchPOIAsyn();
     }

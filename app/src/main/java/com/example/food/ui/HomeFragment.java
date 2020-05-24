@@ -24,7 +24,11 @@ import com.example.food.utils.RxBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +60,8 @@ public class HomeFragment extends BaseFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private List<Shop>favList=new ArrayList<>();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -162,18 +168,16 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+
     public void refresh(){
-        compositeDisposable.add(appDatabase.shopDao().getUserFavShopId(getCurrentUser().getUserId())
+        compositeDisposable.add(appDatabase.shopDao().getUserFav(getCurrentUser().getUserId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> {
                     showToast("操作失败");
                 })
-                .subscribe(names -> {
-                    Log.e(TAG,names.toString());
-                            shopAdapter.notifyShopFav(names);
-                            shopAdapter.setData(shops);
-                            swip.setRefreshing(false);
+                .subscribe(favs -> {
+                            rankShop(shops,favs.getShops());
                         },
                         throwable -> {
                             showToast("操作失败");
@@ -183,6 +187,60 @@ public class HomeFragment extends BaseFragment {
         );
     }
 
+    public void rankShop(List<Shop>shopList,List<Shop>favList){
+        List<String>names=new ArrayList<>();
+        Set<String>tags=new HashSet<>();
+        for (int i = 0; i < shopList.size(); i++) {
+            Shop shop=shopList.get(i);
+            shop.setWeight(0);
+            if (getCurrentUser().getFav().get(0).equals(shop.getType())){
+                shop.setWeight(shop.getWeight()+10);
+            }
+            int jobWeight=0;
+            switch (getCurrentUser().getJob()){
+                case "学生":
+                    jobWeight=30;
+                    break;
+                case "工人":
+                    jobWeight=40;
+                    break;
+                case "白领":
+                    jobWeight=60;
+                    break;
+                case "吃货":
+                    jobWeight=100;
+                    break;
+            }
+            if (Integer.parseInt(shop.getPrice())<=jobWeight){
+                shop.setWeight(shop.getWeight()+8);
+            }
+
+            for (int j = 0; j < favList.size(); j++) {
+                if (shop.getName().equals(favList.get(j).getName())){
+                    shop.setWeight(shop.getWeight()+10);
+                }
+                names.add(favList.get(j).getName());
+                tags.add(favList.get(j).getType());
+            }
+
+            for (String str : tags) {
+               if (str.equals(shop.getType()))
+                   shop.setWeight(shop.getWeight()+10);
+            }
+
+        }
+        Collections.sort(shops, new Comparator<Shop>() {
+            @Override
+            public int compare(Shop shop, Shop t1) {
+
+                return -(shop.getWeight()-t1.getWeight());
+            }
+        });
+        Log.e("tag",shops.toString());
+        shopAdapter.notifyShopFav(names);
+        shopAdapter.setData(shops);
+        swip.setRefreshing(false);
+    }
 
 
     @Override

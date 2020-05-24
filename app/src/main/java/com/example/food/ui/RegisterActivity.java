@@ -121,6 +121,7 @@ public class RegisterActivity extends BaseActivity {
                                         showToast("操作成功");
                                         Intent intent2 = new Intent(RegisterActivity.this, LoginActivity.class);
                                         startActivity(intent2);
+                                        finish();
                                     },
                                     throwable -> {
                                         showToast("操作失败");

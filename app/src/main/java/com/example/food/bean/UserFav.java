@@ -7,9 +7,10 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
+import static androidx.room.ForeignKey.NO_ACTION;
 
-@Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "userId", childColumns = "userId",onDelete = CASCADE),
-        @ForeignKey(entity = Shop.class, parentColumns = "name", childColumns = "name",onDelete = CASCADE)},indices = {@Index(value = "userId"),@Index(value = "name")})
+@Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "userId", childColumns = "userId",onDelete = NO_ACTION),
+        @ForeignKey(entity = Shop.class, parentColumns = "name", childColumns = "name",onDelete = NO_ACTION)},indices = {@Index(value = "userId"),@Index(value = "name")})
 public class UserFav {
     @PrimaryKey(autoGenerate = true)
     private int uid;

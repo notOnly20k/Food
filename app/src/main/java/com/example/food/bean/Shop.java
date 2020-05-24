@@ -80,9 +80,13 @@ public class Shop implements Serializable {
     @Override
     public String toString() {
         return "Shop{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", type='" + type + '\'' +
+                ", picUrl='" + picUrl + '\'' +
+                ", price='" + price + '\'' +
+                ", rank='" + rank + '\'' +
+                ", weight=" + weight +
                 '}';
     }
 }
