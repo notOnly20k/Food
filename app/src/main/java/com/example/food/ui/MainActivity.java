@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
         });
 
         initLocationListener();
-        search("050000", "0851", null);
+//        search("050000", "0851", null);
     }
 
     private void initLocationListener() {
@@ -242,11 +242,11 @@ public class MainActivity extends BaseActivity {
             }
         });
 //   0851  26.559846--106.725175
-//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
-//                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
 
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
-                106.725175), 1000));//设置周边搜索的中心点以及半径
+//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
+//                106.725175), 1000));//设置周边搜索的中心点以及半径
 
         poiSearch.searchPOIAsyn();
     }
