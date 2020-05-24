@@ -49,6 +49,8 @@ public class ShopAdapter extends BaseAdapter<Shop> {
     protected void onBindData(BaseHolder baseHolder, final Shop shop, int postion) {
         TextView tvName = baseHolder.getView(R.id.tv_name);
         TextView tvAdr = baseHolder.getView(R.id.tv_adr);
+        TextView tvPrice = baseHolder.getView(R.id.tv_price);
+        TextView tvRank = baseHolder.getView(R.id.tv_rank);
         ImageView imgFav = baseHolder.getView(R.id.img_fav);
         ImageView imgDisFav = baseHolder.getView(R.id.img_disfav);
         ImageView img = baseHolder.getView(R.id.img);
@@ -79,6 +81,8 @@ public class ShopAdapter extends BaseAdapter<Shop> {
         });
         tvName.setText(shop.getName());
         tvAdr.setText(shop.getAddress());
+        tvPrice.setText("单价："+shop.getPrice()+"元/人");
+        tvRank.setText("评分："+shop.getRank());
         imgFav.setVisibility(View.GONE);
         imgDisFav.setVisibility(View.VISIBLE);
 
@@ -120,13 +124,8 @@ public class ShopAdapter extends BaseAdapter<Shop> {
         Collections.sort(datas, new Comparator<Shop>() {
             @Override
             public int compare(Shop shop, Shop t1) {
-                int s=-1;
-                for (int i = 0; i < user.getFav().size(); i++) {
-                    if (t1.getType().split(";")[1].equals(user.getFav().get(i))){
-                        s=100;
-                    }
-                }
-                return s;
+
+                return -(shop.getWeight()-t1.getWeight());
             }
         });
         super.setData(datas);

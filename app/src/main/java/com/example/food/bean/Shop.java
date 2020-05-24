@@ -2,6 +2,7 @@ package com.example.food.bean;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
@@ -14,6 +15,35 @@ public class Shop implements Serializable {
     private String address;
     private String type;
     private String picUrl;
+    private String price;
+    private String rank;
+
+    @Ignore
+    private int weight;
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String rank) {
+        this.rank = rank;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
 
     public String getPicUrl() {
         return picUrl;

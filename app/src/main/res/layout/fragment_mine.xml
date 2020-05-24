@@ -53,6 +53,22 @@
         android:layout_height="1px"
         android:background="@color/color_gray_divider"
         />
+    <TextView
+        android:id="@+id/tv_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:text="用户职业"
+        android:padding="16dp"
+        android:textColor="@color/black_00"
+        android:textSize="16sp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_gray_divider"
+        />
 
     <Button
         android:id="@+id/btn_logout"

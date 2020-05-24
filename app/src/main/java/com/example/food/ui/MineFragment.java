@@ -36,6 +36,8 @@ public class MineFragment extends BaseFragment {
     TextView tvInfo;
     @BindView(R.id.tv_fav)
     TextView tvFav;
+    @BindView(R.id.tv_job)
+    TextView tvJob;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -81,13 +83,18 @@ public class MineFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvFav.setOnClickListener(v->{
+        tvFav.setOnClickListener(v -> {
             Intent intent2 = new Intent(getContext(), UserTagActivity.class);
             startActivity(intent2);
         });
 
-        tvInfo.setOnClickListener(v->{
+        tvInfo.setOnClickListener(v -> {
             Intent intent2 = new Intent(getContext(), UersInfoActivity.class);
+            startActivity(intent2);
+        });
+
+        tvJob.setOnClickListener(v->{
+            Intent intent2 = new Intent(getContext(), UserJobActivity.class);
             startActivity(intent2);
         });
         btnLogout.setOnClickListener(v -> {

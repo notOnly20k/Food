@@ -57,6 +57,10 @@ public class ShopDetailActivity extends BaseActivity {
     Button btnComment;
     @BindView(R.id.card3)
     LinearLayout card3;
+    @BindView(R.id.tv_price)
+    TextView tvPrice;
+    @BindView(R.id.tv_rank)
+    TextView tvRank;
     private Shop shop;
 
     MessageAdapter messageAdapter;
@@ -68,12 +72,14 @@ public class ShopDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
-        appDatabase=initAppDatabase();
+        appDatabase = initAppDatabase();
         setBackButton(true);
         ButterKnife.bind(this);
         shop = (Shop) getIntent().getExtras().getSerializable("shop");
         tvName.setText(shop.getName());
         tvAdr.setText(shop.getAddress());
+        tvPrice.setText("单价："+shop.getPrice()+"元/人");
+        tvRank.setText("评分："+shop.getRank());
         Picasso.with(this) //
                 .load(shop.getPicUrl()) //加载地址
                 .placeholder(R.drawable.shop)
@@ -101,9 +107,9 @@ public class ShopDetailActivity extends BaseActivity {
         messageAdapter = new MessageAdapter(this, messages, R.layout.item_message);
         recMessage.setAdapter(messageAdapter);
         recMessage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        btnComment.setOnClickListener(v->{
-            if (!etComment.getText().toString().isEmpty()){
-                Message message=new Message();
+        btnComment.setOnClickListener(v -> {
+            if (!etComment.getText().toString().isEmpty()) {
+                Message message = new Message();
                 message.setContent(etComment.getText().toString());
                 message.setDate(new Date());
                 message.setShopNmae(shop.getName());
@@ -120,7 +126,7 @@ public class ShopDetailActivity extends BaseActivity {
                                 },
                                 throwable -> {
                                     showToast("操作失败");
-                                    Log.e(TAG,"操作失败",throwable);
+                                    Log.e(TAG, "操作失败", throwable);
                                 })
                 );
             }
@@ -134,7 +140,7 @@ public class ShopDetailActivity extends BaseActivity {
                 })
                 .subscribe(names -> {
                             for (int i = 0; i < names.size(); i++) {
-                                if (shop.getName().equals(names.get(i))){
+                                if (shop.getName().equals(names.get(i))) {
                                     imgDisfav.setVisibility(View.GONE);
                                     imgFav.setVisibility(View.VISIBLE);
                                 }
@@ -142,23 +148,23 @@ public class ShopDetailActivity extends BaseActivity {
                         },
                         throwable -> {
                             showToast("操作失败");
-                            Log.e(TAG,"操作失败",throwable);
+                            Log.e(TAG, "操作失败", throwable);
                         })
         );
         getData();
     }
 
     public void OnFavClick(Shop shop, boolean fav) {
-        UserFav userFav=new UserFav();
+        UserFav userFav = new UserFav();
         userFav.setName(shop.getName());
         userFav.setUserId(getCurrentUser().getUserId());
         Completable completable;
-        Log.e(TAG,fav+"");
-        if (fav){
-            completable= appDatabase.shopDao().insertFav(userFav);
+        Log.e(TAG, fav + "");
+        if (fav) {
+            completable = appDatabase.shopDao().insertFav(userFav);
 
-        }else {
-            completable=appDatabase.shopDao().deleteFav(userFav.getName(),userFav.getUserId());
+        } else {
+            completable = appDatabase.shopDao().deleteFav(userFav.getName(), userFav.getUserId());
         }
         compositeDisposable.add(completable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -166,15 +172,15 @@ public class ShopDetailActivity extends BaseActivity {
                     showToast("操作失败");
                 })
                 .subscribe(() -> {
-                            if (fav){
+                            if (fav) {
                                 showToast("收藏成功");
-                            }else {
+                            } else {
                                 showToast("取消成功");
                             }
                         },
                         throwable -> {
                             showToast("操作失败");
-                            Log.e(TAG,"操作失败",throwable);
+                            Log.e(TAG, "操作失败", throwable);
                         })
         );
     }
@@ -193,7 +199,7 @@ public class ShopDetailActivity extends BaseActivity {
                         },
                         throwable -> {
                             showToast("操作失败");
-                            Log.e(TAG,"操作失败",throwable);
+                            Log.e(TAG, "操作失败", throwable);
                         })
         );
     }

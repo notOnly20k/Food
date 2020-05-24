@@ -27,8 +27,10 @@ import com.example.food.utils.PreferencesUtil;
 import com.example.food.utils.RxBus;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity {
         });
 
         initLocationListener();
-//        search("050000", "0851", null);
+        search("050000", "0851", null);
     }
 
     private void initLocationListener() {
@@ -156,7 +158,7 @@ public class MainActivity extends BaseActivity {
 //keyWord表示搜索字符串，
 //第二个参数表示POI搜索类型，二者选填其一，选用POI搜索类型时建议填写类型代码，码表可以参考下方（而非文字）
 //cityCode表示POI搜索区域，可以是城市编码也可以是城市名称，也可以传空字符串，空字符串代表全国在全国范围内进行搜索
-        query.setPageSize(50);// 设置每页最多返回多少条poiitem
+        query.setPageSize(70);// 设置每页最多返回多少条poiitem
         query.setPageNum(1);//设置查询页码
         PoiSearch poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(new PoiSearch.OnPoiSearchListener() {
@@ -172,15 +174,46 @@ public class MainActivity extends BaseActivity {
                             + poiItem.getTypeDes()
                     );
                     Shop shop=new Shop();
+                    shop.setWeight(0);
+
                     shop.setAddress(poiItem.getProvinceName() + poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet());
                     shop.setName(poiItem.getTitle());
-                    shop.setType(poiItem.getTypeDes());
+                    shop.setType(poiItem.getTypeDes().split(";")[2]);
+                    try {
+                        shop.setRank(nextDouble(3.0,5.0));
+                    } catch (Exception e) {
+                        shop.setRank("3.5");
+                        e.printStackTrace();
+                    }
+
+                    shop.setPrice(getRandomPrice().toString());
                     if (poiItem.getPhotos().size()>0) {
                         String url=poiItem.getPhotos().get(0).getUrl();
                         if (url.startsWith("http://")){
                             url=url.replace("http://","https://");
                         }
                         shop.setPicUrl(url);
+                    }
+                    if (getCurrentUser().getFav().get(0).equals(shop.getType())){
+                        shop.setWeight(shop.getWeight()+10);
+                    }
+                    int jobWeight=0;
+                    switch (getCurrentUser().getJob()){
+                        case "学生":
+                            jobWeight=30;
+                            break;
+                        case "工人":
+                            jobWeight=40;
+                            break;
+                        case "白领":
+                            jobWeight=60;
+                            break;
+                        case "吃货":
+                            jobWeight=100;
+                            break;
+                    }
+                    if (Integer.parseInt(shop.getPrice())<=jobWeight){
+                        shop.setWeight(shop.getWeight()+10);
                     }
                     shops.add(shop);
                 }
@@ -209,13 +242,38 @@ public class MainActivity extends BaseActivity {
             }
         });
 //   0851  26.559846--106.725175
-        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
-                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
+//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(aMapLocation.getLatitude(),
+//                aMapLocation.getLongitude()), 1000));//设置周边搜索的中心点以及半径
 
-//        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
-//                106.725175), 1000));//设置周边搜索的中心点以及半径
+        poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(26.559846,
+                106.725175), 1000));//设置周边搜索的中心点以及半径
 
         poiSearch.searchPOIAsyn();
+    }
+
+    public String nextDouble(final double min, final double max) throws Exception {
+        DecimalFormat df = new DecimalFormat("#.0");
+        if (max < min) {
+            throw new Exception("min < max");
+        }
+        if (min == max) {
+            return df.format(min);
+        }
+        return df.format(min + ((max - min) * new Random().nextDouble()));
+    }
+
+    public  Integer getRandomPrice() {
+        Integer min = 20;
+        Integer max = 100;
+
+        Random random = new  Random();
+
+        /**
+         * random.nextInt(max) % (max-min+1)  ->  [0, 499] % 301 == [0, 300]
+         * [0, 300] + 200 = [200, 500]
+         */
+        int result = random.nextInt(max) % (max-min+1) + min;
+        return result;
     }
 
 

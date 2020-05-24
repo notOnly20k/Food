@@ -18,7 +18,34 @@ public class User implements Serializable {
     private int userId;
     private String name;
     private String pwd;
+    private String birth;
+    private String sex;
+    private String job;
     private List<String>fav;
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
 
     public int getUserId() {
         return userId;
@@ -58,6 +85,9 @@ public class User implements Serializable {
                 "userId=" + userId +
                 ", name='" + name + '\'' +
                 ", pwd='" + pwd + '\'' +
+                ", birth='" + birth + '\'' +
+                ", sex='" + sex + '\'' +
+                ", job='" + job + '\'' +
                 ", fav=" + fav +
                 '}';
     }

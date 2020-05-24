@@ -37,4 +37,6 @@ public class Constant {
            " 糕饼店",
            " 甜品店"
             );
+
+    public static List<String>JOBARRY=Arrays.asList("学生","工人","白领","吃货");
 }

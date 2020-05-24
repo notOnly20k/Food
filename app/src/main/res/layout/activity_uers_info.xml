@@ -10,7 +10,7 @@
     <EditText
         android:id="@+id/etName"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="300dp"
         android:textSize="16sp"
@@ -28,6 +28,60 @@
         android:layout_height="wrap_content"
         android:hint="密码"
         />
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp">
+
+        <Button
+            android:id="@+id/btn_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow_ffcc00_alpha"
+            android:text="出生日期选择" />
+
+        <TextView
+            android:id="@+id/tv_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="4dp"
+            android:layout_toRightOf="@id/btn_date" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="性别选择:"
+        android:textSize="16sp" />
+
+    <RadioGroup
+        android:id="@+id/rg_sex"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="男" />
+
+        <RadioButton
+            android:id="@+id/rb_woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="女" />
+
+    </RadioGroup>
+
 
     <Button
         android:id="@+id/btn_save"
